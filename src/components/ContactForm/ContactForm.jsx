@@ -24,15 +24,15 @@ export const ContactForm = ({ onAddContact }) => {
     >
       <Form>
         <label className={css.labelForm}>
-          Name
+          <span>Name</span>
           <Field name="name" type="text" />
-          <ErrorMessage component="span" name="name" />
         </label>
+        <ErrorMessage component="div" name="name" />
         <label className={css.labelForm}>
-          Number
+          <span>Number</span>
           <Field name="number" type="text" />
-          <ErrorMessage component="span" name="number" />
         </label>
+        <ErrorMessage component="div" name="number" />
         <button type="submit">Add contact</button>
       </Form>
     </Formik>

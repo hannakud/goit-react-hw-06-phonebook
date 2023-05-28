@@ -1,4 +1,5 @@
 form {
+  width: 350px;
   display: flex;
   gap: 12px;
   justify-content: center;
@@ -8,7 +9,6 @@ form {
   padding: 40px;
   border: 3px solid #333333;
   border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
-  text-transform: uppercase;
   letter-spacing: 3px;
   background: #ffffff;
   position: relative;
@@ -29,41 +29,39 @@ form::before {
 input {
   margin-left: 20px;
   padding: 7px;
+  height: 35px;
+  box-sizing: border-box;
 }
 
 .labelForm {
   font-weight: 400;
-}
-form span {
-  padding-left: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+  text-transform: uppercase;
 }
 
-form span {
+form div {
+  /* padding-left: 10px; */
   position: relative;
-  color: hsl(0, 0%, 68%);
+  color: hsl(0, 68%, 47%);
   font-weight: bold;
   font-family: 'Anonymous Pro', monospace;
-  letter-spacing: 7px;
   overflow: hidden;
   border-right: 2px solid hsl(0, 0%, 80%);
-  white-space: nowrap;
-  animation: typewriter 4s steps(44) 1s 1 normal both,
-    blinkTextCursor 500ms infinite;
+  white-space: break-spaces;
+  max-width: 100%;
+  width: 100%;
+  font-size: 14px;
+  text-align: left;
+  text-transform: capitalize;
 }
 
-@keyframes typewriter {
-  from {
-    width: 0;
-  }
-  to {
-    width: 710px;
-  }
+label {
+  display: flex;
 }
-@keyframes blinkTextCursor {
-  from {
-    border-right-color: hsl(0, 0%, 80%);
-  }
-  to {
-    border-right-color: transparent;
-  }
+
+form span {
+  width: 90px;
+  align-items: center;
+  display: flex;
 }
