@@ -1,34 +1,21 @@
-import { useEffect, useState } from 'react';
 import css from './App.module.css';
 import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
-import { nanoid } from 'nanoid';
-
-const getFilteredContactsList = (filter, contacts) => {
-  return contacts.filter(el =>
-    el.name.toLowerCase().includes(filter.toLowerCase().trim())
-  );
-};
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addContact,
+  deleteContact,
+  getContacts,
+  getFilteredContacts,
+} from 'redux/contactsSlice';
+import { getFilter, setFilter } from 'redux/filterSlice';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    return JSON.parse(localStorage.getItem('contacts')) || [];
-  });
-  const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
-
-    if (parsedContacts) {
-      setContacts(parsedContacts);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const filteredContactsList = useSelector(getFilteredContacts);
 
   const onAddContact = formValue => {
     const isExist = contacts.some(
@@ -38,20 +25,14 @@ export const App = () => {
       alert('Contact is already exist');
       return;
     }
-    const newContact = {
-      id: nanoid(),
-      name: formValue.name,
-      number: formValue.number,
-    };
-    setContacts(prevState => [...prevState, newContact]);
+    dispatch(addContact(formValue));
   };
 
   const onDeleteContact = id => {
-    setContacts(prevState => prevState.filter(el => el.id !== id));
-    setFilter('');
+    dispatch(deleteContact(id));
+    dispatch(setFilter(''));
   };
 
-  const filteredContactsList = getFilteredContactsList(filter, contacts);
   const emptyMessage = filter
     ? `No contacts macth "${filter}"`
     : 'Phonebook is empty. Add contacts first';
@@ -63,7 +44,7 @@ export const App = () => {
       <h2>Contacts</h2>
       <Filter
         value={filter}
-        onChangeFilter={event => setFilter(event.target.value)}
+        onChangeFilter={event => dispatch(setFilter(event.target.value))}
       />
       {filteredContactsList.length ? (
         <ContactList

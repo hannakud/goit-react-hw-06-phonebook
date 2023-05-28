@@ -1,10 +1,15 @@
-@import-normalize; /* bring in normalize.css styles */
+@import-normalize;
 
 body {
-  margin: 0;
   font-family: arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: url('https://img.freepik.com/premium-photo/concept-contact-us-blank-wooden-cubes-square-dice-with-symbol-email-telephone-address-placed-wood-background_44868-1254.jpg?w=2000')
+    0px 0px / cover no-repeat fixed rgb(222, 226, 255);
+  overflow-x: hidden;
+  margin: 0px auto;
+  width: 100%;
+  min-height: 100%;
 }
 
 code {
