@@ -52,7 +52,7 @@ export const App = () => {
           onDeleteContact={onDeleteContact}
         />
       ) : (
-        <div>{emptyMessage}</div>
+        <div className={css.message}>{emptyMessage}</div>
       )}
     </main>
   );
