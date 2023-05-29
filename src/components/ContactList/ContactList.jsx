@@ -1,6 +1,17 @@
-import PropTypes from 'prop-types';
 import css from './ContactList.module.css';
-export const ContactList = ({ list, onDeleteContact }) => {
+import { setFilter } from 'redux/filterSlice';
+import { deleteContact } from 'redux/contactsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getFilteredContacts } from 'redux/contactsSlice';
+
+export const ContactList = () => {
+  const dispatch = useDispatch();
+  const list = useSelector(getFilteredContacts);
+  const onDeleteContact = id => {
+    dispatch(deleteContact(id));
+    dispatch(setFilter(''));
+  };
+
   return (
     <ul className={css.contactList}>
       {list.map(({ id, name, number }) => {
@@ -16,15 +27,4 @@ export const ContactList = ({ list, onDeleteContact }) => {
       })}
     </ul>
   );
-};
-
-ContactList.propTypes = {
-  list: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
 };

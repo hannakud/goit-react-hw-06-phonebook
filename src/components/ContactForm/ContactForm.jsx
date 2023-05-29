@@ -1,26 +1,39 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { object, string } from 'yup';
-import PropTypes from 'prop-types';
 import css from './ContactForm.module.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact, getContacts } from 'redux/contactsSlice';
 
-export const ContactForm = ({ onAddContact }) => {
-  let ContactSchema = object({
-    name: string().required(),
-    number: string()
-      .matches(
-        /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
-        'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
-      )
-      .required('Number is required'),
-  });
+const contactSchema = object({
+  name: string().required(),
+  number: string()
+    .matches(
+      /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
+      'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
+    )
+    .required('Number is required'),
+});
+
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  const onAddContact = (values, actions) => {
+    const isExist = contacts.some(
+      el => el.name.toLowerCase() === values.name.trim().toLowerCase()
+    );
+    if (isExist) {
+      alert('Contact is already exist');
+      return;
+    }
+    dispatch(addContact({ ...values }));
+    actions.resetForm();
+  };
+
   return (
     <Formik
       initialValues={{ name: '', number: '' }}
-      validationSchema={ContactSchema}
-      onSubmit={(values, actions) => {
-        onAddContact(values);
-        actions.resetForm();
-      }}
+      validationSchema={contactSchema}
+      onSubmit={onAddContact}
     >
       <Form>
         <label className={css.labelForm}>
@@ -37,8 +50,4 @@ export const ContactForm = ({ onAddContact }) => {
       </Form>
     </Formik>
   );
-};
-
-ContactForm.propTypes = {
-  onAddContact: PropTypes.func.isRequired,
 };
